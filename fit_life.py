@@ -1,26 +1,72 @@
 # Проект FitLife - MVP версия 1.0
 
-
-# 1. Знакомство
-# TODO: Спроси у пользователя имя и сохрани в переменную user_name
-# TODO: Спроси возраст и сохрани в переменную user_age (не забудь преобразовать в число)
-
-
-# 2. Сбор данных
-# TODO: Запроси вес (в кг) и сохрани в user_weight (тип float)
-# TODO: Запроси рост (в метрах, например 1.75) и сохрани в user_height (тип float)
-
-
-# 3. Логика расчетов (Функции как "черный ящик": используем арифметику)
-# Формула ИМТ: вес разделить на (рост в квадрате)
-# TODO: Рассчитай bmi (Индекс массы тела)
-
-
-# Подсчет воды: вес * 30 мл
-# TODO: Рассчитай water_needed
+# Получаем данные пользователя с проверкой try/except
+def get_user_data():
+    user_name = input('Привет! Как тебя зовут?: ')
+    while True:
+        try:
+            user_age = int(input('Сколько тебе лет?: '))
+            if user_age <= 0:
+                print('Возраст должен быть положительным числом!')
+                continue
+            if user_age > 110:
+                print('Возраст выглядит неправдоподобно!')
+                continue
+            break
+        except ValueError:
+            print('Ошибка! Введите целое число (например, 20)!')
+    return user_name, user_age
 
 
-# 4. Вывод красивого результата
-# TODO: Используй f-строку, чтобы вывести приветствие, например: "Привет, Иван!"
-# TODO: Выведи возраст, ИМТ (округленный до 1 знака) и норму воды.
-print("Расчет окончен. Будьте здоровы!")
+# Получаем параметры пользователя с проверкой try/except
+def get_user_parameters():
+    while True:
+        try:
+            user_weight = float(
+                input('Введите ваш вес в кг (используйте точку): '))
+            if user_weight <= 0:
+                print("Вес должен быть положительным числом!")
+                continue
+            break
+        except ValueError:
+            print("Ошибка! Используйте число с точкой (например, 70.5).")
+
+    while True:
+        try:
+            user_height = float(
+                input('Введите ваш рост в метрах (используйте точку): '))
+            if user_height <= 0:
+                print
+                ("Рост должен быть положительным числом. Попробуйте ещё раз.")
+                continue
+            if user_height > 2.5:
+                print("Проверьте значение роста. Введите ещё раз.")
+                continue
+            break
+        except ValueError:
+            print("Ошибка! Используйте число с точкой (например, 1.75).")
+
+    return user_weight, user_height
+
+
+# Получаем переменные из функций
+user_name, user_age = get_user_data()
+user_weight, user_height = get_user_parameters()
+
+# Константы
+WATER_PER_KG = 30
+MILLILITERS_PER_LITER = 1000
+
+# Расчёт индекса массы тела с округлением
+bmi = round(user_weight / (user_height ** 2), 1)
+# Расчёт потребления воды в литрах без округления
+water_l = user_weight * WATER_PER_KG / MILLILITERS_PER_LITER
+
+# Выводим результат
+print()
+print()
+print(f'--- Отчёт для пользователя {user_name}, {user_age} лет ---')
+print(f'Индекс массы тела (BMI): {bmi}')
+print(f'Рекомендуемое потребление воды: {water_l:.1f} л в день')
+print('--- Расчёт окончен. Будьте здоровы! ---')
+print('--- Спасибо, что используете Fit Life Bot!!! ---')
