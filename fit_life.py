@@ -2,6 +2,7 @@
 
 # Получаем данные пользователя с проверкой try/except
 def get_user_data():
+    """Получаем имя и возраст пользователя с проверкой ввода."""
     user_name = input('Привет! Как тебя зовут?: ')
     while True:
         try:
@@ -20,6 +21,7 @@ def get_user_data():
 
 # Получаем параметры пользователя с проверкой try/except
 def get_user_parameters():
+    """Получаем вес и рост пользователя с проверкой ввода."""
     while True:
         try:
             user_weight = float(
