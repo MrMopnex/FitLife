@@ -4,11 +4,11 @@
 def get_user_data():
     """Получаем имя и возраст пользователя с проверкой ввода."""
     while True:
-        user_name = input('Здравствуйте! Укажите своё имя: ').strip().title()
+        user_name = input('Здравствуйте! Укажите своё имя: ').strip()
         if not user_name:
             print('Имя не может быть пустым')
             continue
-        if len(user_name) < 2 or len(user_name) > 30:
+        if not (2 <= len(user_name) <= 30):
             print('Имя должно содержать от 2 до 30 символов')
             continue
         break
