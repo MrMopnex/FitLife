@@ -3,15 +3,21 @@
 # Получаем данные пользователя с проверкой try/except
 def get_user_data():
     """Получаем имя и возраст пользователя с проверкой ввода."""
-    user_name = input('Привет! Как тебя зовут?: ')
+    while True:
+        user_name = input('Здравствуйте! Укажите своё имя: ').strip().title()
+        if not user_name:
+            print('Имя не может быть пустым')
+            continue
+        if len(user_name) < 2 or len(user_name) > 30:
+            print('Имя должно содержать от 2 до 30 символов')
+            continue
+        break
+
     while True:
         try:
-            user_age = int(input('Сколько тебе лет?: '))
-            if user_age <= 0:
-                print('Возраст должен быть положительным числом!')
-                continue
-            if user_age > 110:
-                print('Возраст выглядит неправдоподобно!')
+            user_age = int(input('Укажите свой возраст: '))
+            if not (1 <= user_age <= 110):
+                print('Возраст должен быть числом от 1 до 110!')
                 continue
             break
         except ValueError:
@@ -25,33 +31,28 @@ def get_user_parameters():
     while True:
         try:
             user_weight = float(
-                input('Введите ваш вес в кг (используйте точку): '))
-            if user_weight <= 0:
-                print("Вес должен быть положительным числом!")
+                input('Укажите свой вес в кг: '))
+            if not (5 <= user_weight <= 300):
+                print('Введите число от 5 до 300')
                 continue
             break
         except ValueError:
-            print("Ошибка! Используйте число с точкой (например, 70.5).")
+            print("Используйте точку для дробного числа (например, 70.5).")
 
     while True:
         try:
             user_height = float(
-                input('Введите ваш рост в метрах (используйте точку): '))
-            if user_height <= 0:
-                print(
-                    "Рост должен быть положительным числом. Ещё раз.")
-                continue
-            if user_height > 2.5:
-                print("Проверьте значение роста. Введите ещё раз.")
+                input('Укажите свой рост в метрах: '))
+            if not (.5 <= user_height <= 2.5):
+                print("Введи значение от 0.5 до 2.5 метра")
                 continue
             break
         except ValueError:
-            print("Ошибка! Используйте число с точкой (например, 1.75).")
+            print("Используйте точку для дробного числа (например, 1.75).")
 
     return user_weight, user_height
 
 
-# Получаем переменные из функций
 user_name, user_age = get_user_data()
 user_weight, user_height = get_user_parameters()
 
@@ -64,11 +65,41 @@ bmi = round(user_weight / (user_height ** 2), 1)
 # Расчёт потребления воды в литрах без округления
 water_l = user_weight * WATER_PER_KG / MILLILITERS_PER_LITER
 
+# Интерпретация показателей ИМТ
+if bmi <= 16:
+    weight_status = "Выраженный дефицит массы тела"
+elif 16 < bmi <= 18.5:
+    weight_status = "Недостаточная масса тела"
+elif 18.5 < bmi <= 25:
+    weight_status = "Норма! Так держать!!!"
+elif 25 < bmi <= 30:
+    weight_status = "Избыточная масса тела"
+elif 30 < bmi <= 35:
+    weight_status = "Ожирение 1 степени"
+elif 35 < bmi <= 40:
+    weight_status = "Ожирение 2 степени"
+else:
+    weight_status = "Ожирение 3 степени"
+
+# Формирование правильного слова для возраста (год, года, лет)
+last_digit = user_age % 10
+last_two_digits = user_age % 100
+
+if 11 <= last_two_digits <= 14:
+    age_word = "лет"
+elif last_digit == 1:
+    age_word = "год"
+elif 2 <= last_digit <= 4:
+    age_word = "года"
+else:  # 0, 5–9
+    age_word = "лет"
+
 # Выводим результат
 print()
 print()
-print(f'--- Отчёт для пользователя {user_name}, {user_age} лет ---')
-print(f'Индекс массы тела (BMI): {bmi}')
+print(f'--- Отчёт для пользователя {user_name}, {user_age} {age_word} ---')
+print(f'Индекс массы тела (BMI): {bmi}.')
+print(f'В соответствии с рекомендациями ВОЗ у вас: {weight_status}. ')
 print(f'Рекомендуемое потребление воды: {water_l:.1f} л в день')
 print('--- Расчёт окончен. Будьте здоровы! ---')
 print('--- Спасибо, что используете Fit Life Bot!!! ---')
